@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {View, StyleSheet} from 'react-native';
 
+// Components
+import SearchForm from './SearchForm';
+
 export default class HomeView extends Component {
   constructor() {
     super();
@@ -8,7 +11,11 @@ export default class HomeView extends Component {
   }
 
   render() {
-    return <View style={styles.mainView} />;
+    return (
+      <View style={styles.mainView}>
+        <SearchForm />
+      </View>
+    );
   }
 }
 
