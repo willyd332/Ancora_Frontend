@@ -13,57 +13,125 @@ import StudyView from './components/StudyView/StudyView';
 import SettingsView from './components/SettingsView/SettingsView';
 import AuthView from './components/AuthView/AuthView';
 
-const HomeNavigator = createStackNavigator({
-  HomeView: {
-    screen: HomeView,
+const Study = {
+  screen: StudyView,
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#385399',
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      color: '#ffffff',
+    },
   },
-  StudyView: {
-    // When you click a study: onPress={() => this.props.navigation.navigate('ConnectionView' .....
-    screen: StudyView,
-  },
-});
+};
 
-const AccountNavigator = createStackNavigator({
-  Account: {
-    screen: AccountView,
+const HomeNavigator = createStackNavigator(
+  {
+    Home: {
+      screen: HomeView,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#385399',
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: '#ffffff',
+        },
+      },
+    },
+    Study,
   },
-  Study: {
-    // When you click a study: onPress={() => navigate('StudyView' .....
-    screen: StudyView,
+  {
+    initialRouteName: 'Home',
   },
-});
+);
+
+const AccountNavigator = createStackNavigator(
+  {
+    Account: {
+      screen: AccountView,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#385399',
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: '#ffffff',
+        },
+      },
+    },
+    Study,
+  },
+  {
+    initialRouteName: 'Account',
+  },
+);
+
+const SettingsNavigator = createStackNavigator(
+  {
+    Settings: {
+      screen: SettingsView,
+      navigationOptions: {
+        headerStyle: {
+          backgroundColor: '#385399',
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: '#ffffff',
+        },
+      },
+    },
+  },
+  {
+    initialRouteName: 'Settings',
+  },
+);
 
 const MainNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: HomeNavigator,
       navigationOptions: {
-        title: '',
-        tabBarIcon: () => <Icon name="search" size={30} color="#900" />,
+        title: 'Home',
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="search" size={30} color={tintColor} />
+        ),
       },
     },
 
     Account: {
       screen: AccountNavigator,
       navigationOptions: {
-        title: '',
-        tabBarIcon: () => <Icon name="medkit" size={30} color="#900" />,
+        title: 'Account',
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="medkit" size={30} color={tintColor} />
+        ),
       },
     },
     Settings: {
-      screen: SettingsView,
+      screen: SettingsNavigator,
       navigationOptions: {
-        title: '',
-        tabBarIcon: () => <Icon name="cogs" size={30} color="#900" />,
+        title: 'Settings',
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="cogs" size={30} color={tintColor} />
+        ),
       },
     },
   },
   {
-    style: {backgroundColor: '#23408e'},
-    activeBackgroundColor: '#23408e',
     tabBarOptions: {
-      inactiveTintColor: '#b5b5b5',
+      activeTintColor: '#ed1b24',
+      inactiveTintColor: 'white',
       showIcon: true,
+      showLabel: false,
+      style: {
+        backgroundColor: '#385399',
+      },
+      iconStyle: {
+        backgroundColor: 'black',
+        padding: 100,
+      },
     },
   },
 );

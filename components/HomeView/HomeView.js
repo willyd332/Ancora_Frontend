@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   mainView: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: '#ecf0f1',
+    backgroundColor: '#23408e',
   },
 
   searchBar: {
