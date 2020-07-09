@@ -5,6 +5,9 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider} from '@ui-kitten/components';
+import {default as theme} from './custom-theme.json';
 
 // Components
 import HomeView from './components/HomeView/HomeView';
@@ -149,7 +152,11 @@ export default class myApp extends Component {
   }
 
   render() {
-    return <AppContainer />;
+    return (
+      <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
+        <AppContainer />
+      </ApplicationProvider>
+    );
   }
 }
 
