@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Dimensions} from 'react-native';
 import {
   Text,
   IndexPath,
@@ -7,6 +7,9 @@ import {
   Select,
   SelectItem,
   Input,
+  Autocomplete,
+  AutocompleteItem,
+  Button,
 } from '@ui-kitten/components';
 
 // Components
@@ -29,30 +32,61 @@ const studyTypes = [
   'Expanded Access',
 ];
 
+// import conditions from './conditions.js';
+
+const vw = Dimensions.get('window').width;
+
+// Functions
+import queryApi from './queryApi';
+
+const filter = (item, query) => {
+  return item.toLowerCase().includes(query.toLowerCase());
+};
+
 const SearchForm = () => {
   const [conditionInput, setConditionInput] = useState('');
-  const [statusInput, setStatusInput] = useState('Any Status');
+  const [conditionData, setConditionData] = useState(studyStatuses);
   const [statusIndex, setStatusIndex] = useState(new IndexPath(0));
-  const [typeInput, setTypeInput] = useState('Any Type');
   const [typeIndex, setTypeIndex] = useState(new IndexPath(0));
   const [sexInput, setSexInput] = useState('');
-  const [minAgeInput, setMinAgeInput] = useState('');
-  const [maxAgeInput, setMaxAgeInput] = useState('');
+  const [minAgeInput, setMinAgeInput] = useState(0);
+  const [maxAgeInput, setMaxAgeInput] = useState(100);
   const [healthyInput, setHealthyInput] = useState('');
   const [cityInput, setCityInput] = useState('');
   const [stateInput, setStateInput] = useState('');
   const [countryInput, setCountryInput] = useState('');
   const [keywordsInput, setKeywordsInput] = useState('');
 
-  const handleCondition = (e) => {
-    setConditionInput(e);
-  };
-
   const createSelectItems = (items) => {
     return items.map((item) => {
       return <SelectItem title={item} key={item} />;
     });
   };
+
+  const onSelect = (index) => {
+    setConditionInput(studyStatuses[index]);
+  };
+
+  const onChangeText = (e) => {
+    setConditionInput(e);
+    setConditionData(studyStatuses.filter((item) => filter(item, e)));
+  };
+
+  const renderOption = (item, index) => (
+    <AutocompleteItem key={index} title={item} />
+  );
+
+  const handleSubmit = () => {
+    const key = keywordsInput
+    const stat = studyStatuses[statusIndex];
+    const typ = studyTypes[typeIndex];
+    const result = queryApi(conditionInput, stat, typ, key, 1, 10);
+    console.log(result)
+  };
+
+  const handleKeyword = (e) => {
+    setKeywordsInput(e);
+  }
 
   return (
     <>
@@ -61,14 +95,14 @@ const SearchForm = () => {
       </View>
 
       <View style={styles.row}>
-        <Input
+        <Autocomplete
           style={styles.input}
           placeholder="Condition"
           value={conditionInput}
-          onChangeText={(e) => {
-            handleCondition(e);
-          }}
-        />
+          onSelect={onSelect}
+          onChangeText={onChangeText}>
+          {conditionData.map(renderOption)}
+        </Autocomplete>
       </View>
 
       <View style={styles.row}>
@@ -92,7 +126,11 @@ const SearchForm = () => {
       </View>
 
       <View style={styles.row}>
-        <Text category="h3">Form Input</Text>
+        <Input
+        value={keywordsInput}
+        onChangeText={handleKeyword}
+        placeholder='Keywords'
+        /> 
       </View>
 
       <View style={styles.row}>
@@ -102,6 +140,15 @@ const SearchForm = () => {
       <View style={styles.row}>
         <Text category="h3">Form Input</Text>
       </View>
+
+      <Button
+        style={styles.submitButton}
+        appearance="outline"
+        status="primary"
+        onPress={handleSubmit}
+        title="Submit">
+        Submit Form
+      </Button>
     </>
   );
 };
@@ -113,10 +160,10 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   input: {
-    width: '100%',
+    width: vw * 0.8,
   },
   input2: {
-    width: '48%',
+    width: vw * 0.45,
     margin: '1%',
   },
 });
