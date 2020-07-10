@@ -77,16 +77,16 @@ const SearchForm = () => {
   );
 
   const handleSubmit = () => {
-    const key = keywordsInput
-    const stat = studyStatuses[statusIndex];
-    const typ = studyTypes[typeIndex];
+    const key = keywordsInput;
+    const stat = studyStatuses[statusIndex - 1];
+    const typ = studyTypes[typeIndex - 1];
     const result = queryApi(conditionInput, stat, typ, key, 1, 10);
-    console.log(result)
+    console.log(result);
   };
 
   const handleKeyword = (e) => {
     setKeywordsInput(e);
-  }
+  };
 
   return (
     <>
@@ -127,10 +127,10 @@ const SearchForm = () => {
 
       <View style={styles.row}>
         <Input
-        value={keywordsInput}
-        onChangeText={handleKeyword}
-        placeholder='Keywords'
-        /> 
+          value={keywordsInput}
+          onChangeText={handleKeyword}
+          placeholder="Keywords"
+        />
       </View>
 
       <View style={styles.row}>

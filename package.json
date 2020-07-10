@@ -18,6 +18,7 @@
     "@react-navigation/native": "^5.6.1",
     "@shoutem/ui": "^2.0.13",
     "@ui-kitten/components": "^5.0.0",
+    "node-fetch": "^2.6.0",
     "react": "16.13.1",
     "react-native": "0.62.2",
     "react-native-dismiss-keyboard": "^1.0.0",
