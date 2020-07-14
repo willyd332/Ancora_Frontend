@@ -14,21 +14,31 @@ const createKeywordQuery = (keywords) => {
 };
 
 export default async (conditionInput, stat, typ, key, minRank, maxRank) => {
-  const condition = conditionInput;
-  const status = stat;
-  const studyType = typ;
+  const condition =
+    conditionInput === '' ? '' : `AREA[ConditionSearch]"${conditionInput}"`;
+
+  const status = stat === 'Any Status' ? '' : `AREA[OverallStatus]"${stat}"`;
+
+  const studyType = typ === 'Any Type' ? '' : `AREA[StudyType]"${typ}"`;
+
   const keywords = key;
 
   const keywordsQuery = createKeywordQuery(keywords);
 
   const fields = 'BriefTitle';
-  const rank = `min_rnk=${minRank}&max_rnk=${maxRank}`;
-  const conditionString = `AREA[ConditionSearch]"${condition}"`;
-  const statusString = `AREA[OverallStatus]"${status}"`;
-  const typeString = `AREA[StudyType]"${studyType}"`;
-  const keywordsString = `AREA[BasicSearch](${keywordsQuery})`;
 
-  const expression = `${conditionString} AND ${statusString} AND ${typeString} AND ${keywordsString}`;
+  const rank = `min_rnk=${minRank}&max_rnk=${maxRank}`;
+
+  let expression = `${condition}${status === '' ? '' : ' AND ' + status}${
+    studyType === '' ? '' : ' AND ' + studyType
+  }`;
+
+  if (keywordsQuery.length > 0) {
+    const keywordsString = `AREA[BasicSearch](${keywordsQuery})`;
+    expression = expression + ` AND ${keywordsString}`;
+  }
+
+  console.log(expression);
 
   const url = `https://clinicaltrials.gov/api/query/study_fields?expr=${expression}&fields=${fields}&${rank}&fmt=json`;
 
