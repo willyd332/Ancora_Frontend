@@ -14,7 +14,7 @@ export default class HomeView extends Component {
   render() {
     return (
       <Layout style={styles.layout}>
-        <SearchForm />
+        <SearchForm navigation={this.props.navigation} />
       </Layout>
     );
   }

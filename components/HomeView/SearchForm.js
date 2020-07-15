@@ -43,7 +43,7 @@ const filter = (item, query) => {
   return item.toLowerCase().includes(query.toLowerCase());
 };
 
-const SearchForm = () => {
+const SearchForm = (props) => {
   const [conditionInput, setConditionInput] = useState('');
   const [conditionData, setConditionData] = useState(studyStatuses);
   const [statusIndex, setStatusIndex] = useState(new IndexPath(0));
@@ -76,12 +76,14 @@ const SearchForm = () => {
     <AutocompleteItem key={index} title={item} />
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const key = keywordsInput;
     const stat = studyStatuses[statusIndex - 1];
     const typ = studyTypes[typeIndex - 1];
-    const result = queryApi(conditionInput, stat, typ, key, 1, 10);
-    console.log(result);
+    const result = await queryApi(conditionInput, stat, typ, key, 1, 10);
+    props.navigation.navigate('Study', {
+      studyData: result,
+    });
   };
 
   const handleKeyword = (e) => {

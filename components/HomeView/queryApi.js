@@ -25,7 +25,8 @@ export default async (conditionInput, stat, typ, key, minRank, maxRank) => {
 
   const keywordsQuery = createKeywordQuery(keywords);
 
-  const fields = 'BriefTitle';
+  const fields =
+    'BriefTitle,BriefSummary,Condition,EligibilityCriteria,OfficialTitle,NCTId,OverallStatus';
 
   const rank = `min_rnk=${minRank}&max_rnk=${maxRank}`;
 
@@ -38,17 +39,13 @@ export default async (conditionInput, stat, typ, key, minRank, maxRank) => {
     expression = expression + ` AND ${keywordsString}`;
   }
 
-  console.log(expression);
-
   const url = `https://clinicaltrials.gov/api/query/study_fields?expr=${expression}&fields=${fields}&${rank}&fmt=json`;
-
-  console.log(url);
 
   const urlResponseJSON = await fetch(url);
 
   const response = await urlResponseJSON.json();
 
-  console.log(response);
+  return response;
 };
 
 // AREAS
