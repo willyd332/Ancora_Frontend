@@ -5,15 +5,32 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as eva from '@eva-design/eva';
+import {ApplicationProvider} from '@ui-kitten/components';
+import {default as theme} from './custom-theme.json';
 
 // Components
 import HomeView from './components/HomeView/HomeView';
 import AccountView from './components/AccountView/AccountView';
-import StudyView from './components/StudyView/StudyView';
+import StudyIndex from './components/StudyView/StudyIndex';
+import StudyView from './components/StudyView/StudyShow';
 import SettingsView from './components/SettingsView/SettingsView';
 import AuthView from './components/AuthView/AuthView';
 
 const Study = {
+  screen: StudyIndex,
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#385399',
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      color: '#ffffff',
+    },
+  },
+};
+
+const StudyShow = {
   screen: StudyView,
   navigationOptions: {
     headerStyle: {
@@ -41,6 +58,7 @@ const HomeNavigator = createStackNavigator(
       },
     },
     Study,
+    StudyShow,
   },
   {
     initialRouteName: 'Home',
@@ -62,6 +80,7 @@ const AccountNavigator = createStackNavigator(
       },
     },
     Study,
+    StudyShow,
   },
   {
     initialRouteName: 'Account',
@@ -149,7 +168,11 @@ export default class myApp extends Component {
   }
 
   render() {
-    return <AppContainer />;
+    return (
+      <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
+        <AppContainer />
+      </ApplicationProvider>
+    );
   }
 }
 
