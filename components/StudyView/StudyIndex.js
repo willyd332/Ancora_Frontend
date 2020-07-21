@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, WebView, Linking} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {BACKEND_URL} from 'react-native-dotenv';
 import {Card, List, Text} from '@ui-kitten/components';
@@ -9,9 +9,11 @@ const StudyIndex = ({navigation}) => {
 
   const studyData = rawStudyData.StudyFieldsResponse.StudyFields;
 
-  const handlePress = (index) => {
+  const handlePress = (info) => {
+    const url = `https://clinicaltrials.gov/ct2/show/${info.item.NCTId[0]}`;
+    Linking.openURL(url);
     navigation.navigate('StudyShow', {
-      showData: studyData[index],
+      showData: studyData[info.index],
     });
   };
 
@@ -33,7 +35,7 @@ const StudyIndex = ({navigation}) => {
         status="basic"
         header={(headerProps) => renderItemHeader(headerProps, info.item)}
         footer={(footerProps) => renderItemFooter(footerProps, info.item)}
-        onPress={() => handlePress(info.index)}>
+        onPress={() => handlePress(info)}>
         <Text>{info.item.BriefSummary}</Text>
       </Card>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {Text} from '@ui-kitten/components';
+import {Text, Layout, Card, Divider} from '@ui-kitten/components';
 import AsyncStorage from '@react-native-community/async-storage';
 import {BACKEND_URL} from 'react-native-dotenv';
 
@@ -16,35 +16,32 @@ const StudyShow = ({navigation}) => {
     NCTId,
   } = studyData;
 
-  console.log(BriefTitle);
-  console.log(BriefSummary);
-  console.log(Condition);
-  console.log(EligibilityCriteria);
-  console.log(OfficialTitle);
-  console.log(NCTId);
+  const Header = ({props}) => (
+    <Text {...props} style={styles.headerText} category="h6">
+      {OfficialTitle}
+    </Text>
+  );
 
-  console.log('********************************************************');
-  console.log(JSON.stringify(studyData, 0, 2));
-  console.log('********************************************************');
+  const Footer = ({props}) => (
+    <Text {...props} style={styles.footerContainer} category="p1">
+      {EligibilityCriteria}
+    </Text>
+  );
 
   return (
-    <ScrollView>
-      <Text className={styles.basicText} category="h2">
-        {OfficialTitle}
-      </Text>
-      <Text className={styles.basicText} category="h6">
-        {BriefTitle}
-      </Text>
-      <Text className={styles.basicText} category="p1">
-        {BriefSummary}
-      </Text>
-      <Text className={styles.basicText} category="p1">
-        {Condition}
-      </Text>
-      <Text className={styles.basicText} category="p1">
-        {EligibilityCriteria}
-      </Text>
-    </ScrollView>
+    <Layout>
+      <ScrollView>
+        <Card style={styles.card} header={Header} footer={Footer}>
+          <Text style={styles.basicText} category="p1">
+            {Condition}
+          </Text>
+
+          <Text style={styles.basicText} category="p1">
+            {BriefSummary}
+          </Text>
+        </Card>
+      </ScrollView>
+    </Layout>
   );
 };
 
@@ -55,8 +52,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ecf0f1',
   },
+  card: {
+    flex: 1,
+    margin: 2,
+    padding: 20,
+  },
   basicText: {
-    color: 'black',
+    margin: 20,
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  headerText: {
+    padding: 10,
   },
 });
 
