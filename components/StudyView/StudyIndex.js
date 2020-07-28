@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, StyleSheet, WebView, Linking} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {BACKEND_URL} from 'react-native-dotenv';
-import {Card, List, Text} from '@ui-kitten/components';
+import {Card, List, Text, Button} from '@ui-kitten/components';
 
 const StudyIndex = ({navigation}) => {
   const rawStudyData = navigation.getParam('studyData');
@@ -28,16 +28,57 @@ const StudyIndex = ({navigation}) => {
     <Text {...footerProps}>{item.OverallStatus}</Text>
   );
 
+  const handleAdd = async (data) => {
+    const disabled = await checkStudy(data);
+
+    if (!disabled) {
+      const body = await JSON.stringify({
+        user_id: 36,
+        studyid: data.item.NCTId[0],
+      });
+      const queryJSON = await fetch(`${BACKEND_URL}/trial/add`, {
+        method: 'POST',
+        body,
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+      const query = await queryJSON.json();
+    }
+  };
+
+  const checkStudy = async (data) => {
+    const body = await JSON.stringify({
+      user_id: 36,
+      studyid: data.item.NCTId[0],
+    });
+
+    const queryJSON = await fetch(`${BACKEND_URL}/trial/check`, {
+      method: 'POST',
+      body,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+
+    const query = await queryJSON.json();
+
+    return query.data;
+  };
+
   const renderItem = (info) => {
     return (
-      <Card
-        style={styles.item}
-        status="basic"
-        header={(headerProps) => renderItemHeader(headerProps, info.item)}
-        footer={(footerProps) => renderItemFooter(footerProps, info.item)}
-        onPress={() => handlePress(info)}>
-        <Text>{info.item.BriefSummary}</Text>
-      </Card>
+      <>
+        <Card
+          style={styles.item}
+          status="basic"
+          header={(headerProps) => renderItemHeader(headerProps, info.item)}
+          footer={(footerProps) => renderItemFooter(footerProps, info.item)}
+          onPress={() => handlePress(info)}>
+          <Text>{info.item.BriefSummary}</Text>
+        </Card>
+        <Button onPress={() => handleAdd(info)}>add</Button>
+      </>
     );
   };
 

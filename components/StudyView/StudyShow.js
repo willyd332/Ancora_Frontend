@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {Text, Layout, Card, Divider} from '@ui-kitten/components';
+import {Text, Layout, Card, Button} from '@ui-kitten/components';
 import AsyncStorage from '@react-native-community/async-storage';
 import {BACKEND_URL} from 'react-native-dotenv';
 
