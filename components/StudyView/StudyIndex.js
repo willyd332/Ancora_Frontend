@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, WebView, Linking} from 'react-native';
+import {View, StyleSheet, Linking, ImageBackground} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {BACKEND_URL} from 'react-native-dotenv';
 import {Card, List, Text, Button} from '@ui-kitten/components';
@@ -11,9 +11,9 @@ const StudyIndex = ({navigation}) => {
 
   const handlePress = (info) => {
     const url = `https://clinicaltrials.gov/ct2/show/${info.item.NCTId[0]}`;
-    Linking.openURL(url);
-    navigation.navigate('StudyShow', {
-      showData: studyData[info.index],
+    // Linking.openURL(url);
+    navigation.navigate('Web', {
+      url,
     });
   };
 
@@ -25,7 +25,9 @@ const StudyIndex = ({navigation}) => {
     );
   };
   const renderItemFooter = (footerProps, item) => (
-    <Text {...footerProps}>{item.OverallStatus}</Text>
+    <Text {...footerProps} category="h6">
+      {item.OverallStatus}
+    </Text>
   );
 
   const handleAdd = async (data) => {
@@ -68,17 +70,21 @@ const StudyIndex = ({navigation}) => {
 
   const renderItem = (info) => {
     return (
-      <>
-        <Card
-          style={styles.item}
-          status="basic"
-          header={(headerProps) => renderItemHeader(headerProps, info.item)}
-          footer={(footerProps) => renderItemFooter(footerProps, info.item)}
-          onPress={() => handlePress(info)}>
-          <Text>{info.item.BriefSummary}</Text>
-        </Card>
-        <Button onPress={() => handleAdd(info)}>add</Button>
-      </>
+      <View style={styles.item}>
+        <ImageBackground
+          style={styles.imgBackground}
+          source={require('./pageBackground.jpg')}>
+          <Card
+            style={styles.card}
+            status="basic"
+            header={(headerProps) => renderItemHeader(headerProps, info.item)}
+            footer={(footerProps) => renderItemFooter(footerProps, info.item)}
+            onPress={() => handlePress(info)}>
+            <Text style={styles.bodyText}>{info.item.BriefSummary}</Text>
+          </Card>
+          <Button onPress={() => handleAdd(info)}>add</Button>
+        </ImageBackground>
+      </View>
     );
   };
 
@@ -103,8 +109,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
+  card: {
+    backgroundColor: 'transparent',
+  },
   item: {
-    marginVertical: 4,
+    marginVertical: 20,
+  },
+  imgBackground: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
+  bodyText: {
+    maxHeight: 200,
+    fontWeight: '600',
   },
 });
 
