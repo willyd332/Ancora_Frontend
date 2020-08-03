@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 const fetch = require('node-fetch');
 
 // Components
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions, ImageBackground} from 'react-native';
 import {
   Text,
   IndexPath,
-  Icon,
   Select,
   SelectItem,
   Input,
@@ -39,22 +38,11 @@ const vw = Dimensions.get('window').width;
 // Functions
 import queryApi from './queryApi';
 
-const filter = (item, query) => {
-  return item.toLowerCase().includes(query.toLowerCase());
-};
-
 const SearchForm = (props) => {
   const [conditionInput, setConditionInput] = useState('');
   const [conditionData, setConditionData] = useState(['Heart Attack']);
   const [statusIndex, setStatusIndex] = useState(new IndexPath(0));
   const [typeIndex, setTypeIndex] = useState(new IndexPath(0));
-  const [sexInput, setSexInput] = useState('');
-  const [minAgeInput, setMinAgeInput] = useState(0);
-  const [maxAgeInput, setMaxAgeInput] = useState(100);
-  const [healthyInput, setHealthyInput] = useState('');
-  const [cityInput, setCityInput] = useState('');
-  const [stateInput, setStateInput] = useState('');
-  const [countryInput, setCountryInput] = useState('');
   const [keywordsInput, setKeywordsInput] = useState('');
 
   const getAutoFill = async () => {
@@ -76,7 +64,7 @@ const SearchForm = (props) => {
 
   const createSelectItems = (items) => {
     return items.map((item) => {
-      return <SelectItem title={item} key={item} />;
+      return <SelectItem style={styles.autoBox} title={item} key={item} />;
     });
   };
 
@@ -94,7 +82,7 @@ const SearchForm = (props) => {
   };
 
   const renderOption = (item, index) => (
-    <AutocompleteItem key={index} title={item} />
+    <AutocompleteItem style={styles.autoBox} key={index} title={item} />
   );
 
   const handleSubmit = async () => {
@@ -113,65 +101,77 @@ const SearchForm = (props) => {
 
   return (
     <>
-      <View style={styles.row}>
-        <Text category="h2">Study Query</Text>
-      </View>
+      <ImageBackground
+        source={require('./background.jpg')}
+        style={styles.backgroundImage}
+        resizeMode="cover">
+        <View style={styles.titleTextRow}>
+          <Text style={styles.text} category="h2">
+            Search Clinical Trials
+          </Text>
+        </View>
 
-      <View style={styles.row}>
-        <Autocomplete
-          style={styles.input}
-          placeholder="Condition"
-          value={conditionInput}
-          onSelect={onSelect}
-          onChangeText={onChangeText}>
-          {conditionData.map(renderOption)}
-        </Autocomplete>
-      </View>
+        <View style={styles.textRow}>
+          <Text style={styles.text} appearance="hint">
+            Hello! This is the Ancora Clinical Trials Search Form. Search
+            through the government database of clinical trials
+            (clinicaltrials.gov) in an easy and simple way.
+          </Text>
+        </View>
 
-      <View style={styles.row}>
-        <Select
-          style={styles.input2}
-          placeholder="Status"
-          selectedIndex={statusIndex}
-          onSelect={(index) => setStatusIndex(index)}
-          value={studyStatuses[statusIndex.row]}>
-          {createSelectItems(studyStatuses)}
-        </Select>
+        <View style={styles.row}>
+          <Autocomplete
+            style={styles.input}
+            placeholder="Condition"
+            value={conditionInput}
+            onSelect={onSelect}
+            onChangeText={onChangeText}>
+            {conditionData.map(renderOption)}
+          </Autocomplete>
+        </View>
 
-        <Select
-          style={styles.input2}
-          placeholder="Type"
-          selectedIndex={typeIndex}
-          onSelect={(index) => setTypeIndex(index)}
-          value={studyTypes[typeIndex.row]}>
-          {createSelectItems(studyTypes)}
-        </Select>
-      </View>
+        <View style={styles.row}>
+          <Select
+            style={styles.input2}
+            placeholder="Status"
+            selectedIndex={statusIndex}
+            onSelect={(index) => setStatusIndex(index)}
+            value={studyStatuses[statusIndex.row]}>
+            {createSelectItems(studyStatuses)}
+          </Select>
+        </View>
 
-      <View style={styles.row}>
-        <Input
-          value={keywordsInput}
-          onChangeText={handleKeyword}
-          placeholder="Keywords"
-        />
-      </View>
+        <View style={styles.row}>
+          <Select
+            style={styles.input2}
+            placeholder="Type"
+            selectedIndex={typeIndex}
+            onSelect={(index) => setTypeIndex(index)}
+            value={studyTypes[typeIndex.row]}>
+            {createSelectItems(studyTypes)}
+          </Select>
+        </View>
 
-      <View style={styles.row}>
-        <Text category="h3">Form Input</Text>
-      </View>
+        <View style={styles.rowKeyword}>
+          <Input
+            style={styles.inputKeyword}
+            value={keywordsInput}
+            multiline={true}
+            textStyle={styles.keywordText}
+            onChangeText={handleKeyword}
+            placeholder="Keywords"
+          />
+        </View>
 
-      <View style={styles.row}>
-        <Text category="h3">Form Input</Text>
-      </View>
-
-      <Button
-        style={styles.submitButton}
-        appearance="outline"
-        status="primary"
-        onPress={handleSubmit}
-        title="Submit">
-        Submit Form
-      </Button>
+        <Button
+          style={styles.submitButton}
+          appearance="filled"
+          status="primary"
+          onPress={handleSubmit}
+          title="Submit">
+          Submit Form
+        </Button>
+      </ImageBackground>
     </>
   );
 };
@@ -180,14 +180,62 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 20,
+    marginBottom: 25,
+    marginLeft: 10,
+  },
+  titleTextRow: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 60,
+    marginTop: 20,
+  },
+  text: {
+    color: 'black',
+    borderColor: 'white',
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    textAlign: 'justify',
+  },
+  textRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginLeft: 30,
+    width: vw * 0.7,
+  },
+  rowKeyword: {
+    marginTop: '10%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10,
   },
   input: {
-    width: vw * 0.8,
+    width: vw * 0.9,
   },
   input2: {
-    width: vw * 0.45,
-    margin: '1%',
+    width: vw * 0.9,
+  },
+  inputKeyword: {
+    width: vw * 0.6,
+    height: '200%',
+  },
+  keywordText: {
+    minHeight: 64,
+  },
+  submitButton: {
+    width: vw * 0.6,
+    marginLeft: 10,
+  },
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
+  autoBox: {
+    backgroundColor: 'lightblue',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
   },
 });
 

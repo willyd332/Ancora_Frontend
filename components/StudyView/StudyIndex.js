@@ -1,43 +1,71 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, WebView, Linking} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import {BACKEND_URL} from 'react-native-dotenv';
-import {Card, List, Text} from '@ui-kitten/components';
+
+// Components
+import {List} from '@ui-kitten/components';
+import StudyItem from './StudyItem';
 
 const StudyIndex = ({navigation}) => {
   const rawStudyData = navigation.getParam('studyData');
 
   const studyData = rawStudyData.StudyFieldsResponse.StudyFields;
 
+  console.log(studyData);
+
   const handlePress = (info) => {
     const url = `https://clinicaltrials.gov/ct2/show/${info.item.NCTId[0]}`;
-    Linking.openURL(url);
-    navigation.navigate('StudyShow', {
-      showData: studyData[info.index],
+    // Linking.openURL(url);
+    navigation.navigate('Web', {
+      url,
     });
   };
 
-  const renderItemHeader = (headerProps, item) => {
-    return (
-      <View {...headerProps}>
-        <Text category="h6">{item.BriefTitle}</Text>
-      </View>
-    );
+  const handleAdd = async (data) => {
+    const disabled = await checkStudy(data);
+
+    if (!disabled) {
+      const body = await JSON.stringify({
+        user_id: 36,
+        studyid: data.item.NCTId[0],
+      });
+      await fetch(`${BACKEND_URL}/trial/add`, {
+        method: 'POST',
+        body,
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+    }
   };
-  const renderItemFooter = (footerProps, item) => (
-    <Text {...footerProps}>{item.OverallStatus}</Text>
-  );
+
+  const checkStudy = async (data) => {
+    const body = await JSON.stringify({
+      user_id: 36,
+      studyid: data.item.NCTId[0],
+    });
+
+    const queryJSON = await fetch(`${BACKEND_URL}/trial/check`, {
+      method: 'POST',
+      body,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+
+    const query = await queryJSON.json();
+
+    return query.data;
+  };
 
   const renderItem = (info) => {
     return (
-      <Card
-        style={styles.item}
-        status="basic"
-        header={(headerProps) => renderItemHeader(headerProps, info.item)}
-        footer={(footerProps) => renderItemFooter(footerProps, info.item)}
-        onPress={() => handlePress(info)}>
-        <Text>{info.item.BriefSummary}</Text>
-      </Card>
+      <StudyItem
+        checkStudy={checkStudy}
+        handleAdd={handleAdd}
+        handlePress={handlePress}
+        info={info}
+      />
     );
   };
 
@@ -62,8 +90,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
+  card: {
+    backgroundColor: 'transparent',
+  },
   item: {
-    marginVertical: 4,
+    marginVertical: 20,
+  },
+  imgBackground: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+  },
+  bodyText: {
+    maxHeight: 200,
+    fontWeight: '600',
   },
 });
 

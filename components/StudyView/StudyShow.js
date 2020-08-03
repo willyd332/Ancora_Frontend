@@ -1,19 +1,15 @@
 import React from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {Text, Layout, Card, Divider} from '@ui-kitten/components';
-import AsyncStorage from '@react-native-community/async-storage';
-import {BACKEND_URL} from 'react-native-dotenv';
+import {Text, Layout, Card} from '@ui-kitten/components';
 
 const StudyShow = ({navigation}) => {
   const studyData = navigation.getParam('showData');
 
   const {
-    BriefTitle,
     BriefSummary,
     Condition,
     EligibilityCriteria,
     OfficialTitle,
-    NCTId,
   } = studyData;
 
   const Header = ({props}) => (

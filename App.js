@@ -7,7 +7,6 @@ import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider} from '@ui-kitten/components';
-import {default as theme} from './custom-theme.json';
 
 // Components
 import HomeView from './components/HomeView/HomeView';
@@ -16,6 +15,7 @@ import StudyIndex from './components/StudyView/StudyIndex';
 import StudyView from './components/StudyView/StudyShow';
 import SettingsView from './components/SettingsView/SettingsView';
 import AuthView from './components/AuthView/AuthView';
+import MyWeb from './components/StudyView/WebBox';
 
 const Study = {
   screen: StudyIndex,
@@ -43,6 +43,19 @@ const StudyShow = {
   },
 };
 
+const Web = {
+  screen: MyWeb,
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#385399',
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      color: '#ffffff',
+    },
+  },
+};
+
 const HomeNavigator = createStackNavigator(
   {
     Home: {
@@ -59,6 +72,7 @@ const HomeNavigator = createStackNavigator(
     },
     Study,
     StudyShow,
+    Web,
   },
   {
     initialRouteName: 'Home',
@@ -169,7 +183,7 @@ export default class myApp extends Component {
 
   render() {
     return (
-      <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
+      <ApplicationProvider {...eva} theme={{...eva.light}}>
         <AppContainer />
       </ApplicationProvider>
     );
