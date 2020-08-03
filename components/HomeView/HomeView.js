@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {Layout, Text} from '@ui-kitten/components';
+import {StyleSheet} from 'react-native';
+import {Layout} from '@ui-kitten/components';
 
 // Components
 import SearchForm from './SearchForm';

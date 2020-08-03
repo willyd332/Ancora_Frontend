@@ -7,7 +7,6 @@ import SplashScreen from 'react-native-splash-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as eva from '@eva-design/eva';
 import {ApplicationProvider} from '@ui-kitten/components';
-import {default as theme} from './custom-theme.json';
 
 // Components
 import HomeView from './components/HomeView/HomeView';

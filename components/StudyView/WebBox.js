@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
 import {WebView} from 'react-native-webview';
 
 const MyWeb = ({navigation}) => {

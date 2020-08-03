@@ -38,10 +38,6 @@ const vw = Dimensions.get('window').width;
 // Functions
 import queryApi from './queryApi';
 
-const filter = (item, query) => {
-  return item.toLowerCase().includes(query.toLowerCase());
-};
-
 const SearchForm = (props) => {
   const [conditionInput, setConditionInput] = useState('');
   const [conditionData, setConditionData] = useState(['Heart Attack']);
