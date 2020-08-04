@@ -56,7 +56,6 @@ const SearchForm = (props) => {
         conditions.push(condition.condition);
       });
       await setConditionData(conditions);
-      console.log(conditionData);
     }
   };
 
@@ -107,15 +106,15 @@ const SearchForm = (props) => {
         resizeMode="cover">
         <View style={styles.titleTextRow}>
           <Text style={styles.text} category="h2">
-            Search Clinical Trials
+            Search Ancora
           </Text>
         </View>
 
         <View style={styles.textRow}>
           <Text style={styles.text} appearance="hint">
             Hello! This is the Ancora Clinical Trials Search Form. Search
-            through the government database of clinical trials
-            (clinicaltrials.gov) in an easy and simple way.
+            through the government database of clinical trials in an easy and
+            simple way.
           </Text>
         </View>
 

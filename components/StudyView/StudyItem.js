@@ -7,13 +7,13 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
 
   const renderItemHeader = (headerProps, item) => {
     return (
-      <View {...headerProps}>
+      <View {...headerProps} style={styles.noBorder}>
         <Text category="h6">{item.BriefTitle}</Text>
       </View>
     );
   };
   const renderItemFooter = (footerProps, item) => (
-    <Text {...footerProps} category="h6">
+    <Text {...footerProps} category="h6" style={styles.noBorder}>
       {item.OverallStatus}
     </Text>
   );
@@ -28,7 +28,8 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
     <View style={styles.item}>
       <ImageBackground
         style={styles.imgBackground}
-        source={require('./pageBackground.jpg')}>
+        source={require('./pageBackground.jpg')}
+        resizeMode="cover">
         <Card
           style={styles.card}
           status="basic"
@@ -54,21 +55,15 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
 };
 
 const styles = StyleSheet.create({
-  mainView: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-  },
-  contentContainer: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
   card: {
     backgroundColor: 'transparent',
+    padding: 10,
+    borderWidth: 0,
   },
   item: {
     marginVertical: 20,
+    backgroundColor: 'black',
+    padding: 10,
   },
   imgBackground: {
     width: '100%',
@@ -78,6 +73,10 @@ const styles = StyleSheet.create({
   bodyText: {
     maxHeight: 200,
     fontWeight: '600',
+    borderWidth: 0,
+  },
+  noBorder: {
+    padding: 10,
   },
 });
 

@@ -67,7 +67,6 @@ const register = async (state, setState, navigate) => {
         if (registeredUserJSON.status === '500' || !registeredUserJSON.data) {
           setState({regError: 'User Already Exists'});
         } else {
-          console.log(registeredUserJSON);
           await AsyncStorage.setItem(
             'username',
             registeredUserJSON.data.username,

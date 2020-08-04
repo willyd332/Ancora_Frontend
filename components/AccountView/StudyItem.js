@@ -1,8 +1,10 @@
 import React from 'react';
 import {View, StyleSheet, ImageBackground} from 'react-native';
-import {Card, Text} from '@ui-kitten/components';
+import AsyncStorage from '@react-native-community/async-storage';
+import {Card, Text, Button} from '@ui-kitten/components';
+import {BACKEND_URL} from 'react-native-dotenv';
 
-const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
+const StudyIndex = ({info, handlePress, setDeleted, deleted}) => {
   const renderItemHeader = (headerProps, item) => {
     return (
       <View {...headerProps}>
@@ -15,6 +17,21 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
       {item.OverallStatus}
     </Text>
   );
+
+  const handleDelete = async () => {
+    const body = await JSON.stringify({
+      user_id: await AsyncStorage.getItem('userId'),
+      studyid: info.item.NCTId[0],
+    });
+    await fetch(`${BACKEND_URL}/trial/delete`, {
+      method: 'POST',
+      body,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+    setDeleted(!deleted);
+  };
 
   return (
     <View style={styles.item}>
@@ -29,6 +46,13 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
           onPress={() => handlePress(info)}>
           <Text style={styles.bodyText}>{info.item.BriefSummary}</Text>
         </Card>
+        <Button
+          status="danger"
+          onPress={() => {
+            handleDelete();
+          }}>
+          Delete
+        </Button>
       </ImageBackground>
     </View>
   );
@@ -47,6 +71,8 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'transparent',
+    borderWidth: 0,
+    padding: 10,
   },
   item: {
     marginVertical: 20,
