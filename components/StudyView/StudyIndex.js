@@ -84,11 +84,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    backgroundColor: 'black',
   },
   contentContainer: {
     paddingHorizontal: 8,
     paddingVertical: 4,
+    backgroundColor: 'black',
   },
   card: {
     backgroundColor: 'transparent',

@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, ImageBackground} from 'react-native';
-import {Card, Text} from '@ui-kitten/components';
+import {Card, Text, Button} from '@ui-kitten/components';
+import {BACKEND_URL} from 'react-native-dotenv';
 
 const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
   const renderItemHeader = (headerProps, item) => {
@@ -16,6 +17,20 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
     </Text>
   );
 
+  const handleDelete = async () => {
+    const body = await JSON.stringify({
+      user_id: 36,
+      studyid: info.item.NCTId[0],
+    });
+    await fetch(`${BACKEND_URL}/trial/delete`, {
+      method: 'POST',
+      body,
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+  };
+
   return (
     <View style={styles.item}>
       <ImageBackground
@@ -29,6 +44,13 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
           onPress={() => handlePress(info)}>
           <Text style={styles.bodyText}>{info.item.BriefSummary}</Text>
         </Card>
+        <Button
+          status="danger"
+          onPress={() => {
+            handleDelete();
+          }}>
+          Delete
+        </Button>
       </ImageBackground>
     </View>
   );
@@ -47,6 +69,8 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'transparent',
+    borderWidth: 0,
+    padding: 10,
   },
   item: {
     marginVertical: 20,

@@ -12,13 +12,16 @@ const AccountView = ({navigation}) => {
   const getStudyData = async (ids) => {
     const fields =
       'BriefTitle,BriefSummary,Condition,EligibilityCriteria,OfficialTitle,NCTId,OverallStatus';
-    let expression = ids.reduce((string, id) => {
-      return `${string} OR ${id}`;
-    });
-    const url = `https://clinicaltrials.gov/api/query/study_fields?expr=AREA[NCTId](${expression})&fields=${fields}&fmt=json`;
-    const urlResponseJSON = await fetch(url);
-    const response = await urlResponseJSON.json();
-    return response.StudyFieldsResponse.StudyFields;
+    if (ids.length > 0) {
+      let expression = ids.reduce((string, id) => {
+        return `${string} OR ${id}`;
+      });
+      const url = `https://clinicaltrials.gov/api/query/study_fields?expr=AREA[NCTId](${expression})&fields=${fields}&fmt=json`;
+      const urlResponseJSON = await fetch(url);
+      const response = await urlResponseJSON.json();
+      return response.StudyFieldsResponse.StudyFields;
+    }
+    return [];
   };
 
   const getUserStudies = async () => {
@@ -61,14 +64,19 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    backgroundColor: 'black',
+  },
+  container: {
+    backgroundColor: 'black',
   },
   contentContainer: {
     paddingHorizontal: 8,
     paddingVertical: 4,
+    backgroundColor: 'black',
   },
   card: {
     backgroundColor: 'transparent',
+    borderWidth: 0,
   },
   item: {
     marginVertical: 20,
