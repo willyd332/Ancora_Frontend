@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {BACKEND_URL} from 'react-native-dotenv';
 
 // Components
@@ -10,8 +11,6 @@ const StudyIndex = ({navigation}) => {
   const rawStudyData = navigation.getParam('studyData');
 
   const studyData = rawStudyData.StudyFieldsResponse.StudyFields;
-
-  console.log(studyData);
 
   const handlePress = (info) => {
     const url = `https://clinicaltrials.gov/ct2/show/${info.item.NCTId[0]}`;
@@ -26,7 +25,7 @@ const StudyIndex = ({navigation}) => {
 
     if (!disabled) {
       const body = await JSON.stringify({
-        user_id: 36,
+        user_id: await AsyncStorage.getItem('userId'),
         studyid: data.item.NCTId[0],
       });
       await fetch(`${BACKEND_URL}/trial/add`, {
@@ -41,7 +40,7 @@ const StudyIndex = ({navigation}) => {
 
   const checkStudy = async (data) => {
     const body = await JSON.stringify({
-      user_id: 36,
+      user_id: await AsyncStorage.getItem('userId'),
       studyid: data.item.NCTId[0],
     });
 

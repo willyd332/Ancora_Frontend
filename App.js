@@ -95,6 +95,7 @@ const AccountNavigator = createStackNavigator(
     },
     Study,
     StudyShow,
+    Web,
   },
   {
     initialRouteName: 'Account',

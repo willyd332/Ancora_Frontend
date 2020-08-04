@@ -56,7 +56,6 @@ const SearchForm = (props) => {
         conditions.push(condition.condition);
       });
       await setConditionData(conditions);
-      console.log(conditionData);
     }
   };
 

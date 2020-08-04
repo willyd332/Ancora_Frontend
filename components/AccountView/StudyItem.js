@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, StyleSheet, ImageBackground} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {Card, Text, Button} from '@ui-kitten/components';
 import {BACKEND_URL} from 'react-native-dotenv';
 
-const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
+const StudyIndex = ({info, handlePress, setDeleted, deleted}) => {
   const renderItemHeader = (headerProps, item) => {
     return (
       <View {...headerProps}>
@@ -19,7 +20,7 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
 
   const handleDelete = async () => {
     const body = await JSON.stringify({
-      user_id: 36,
+      user_id: await AsyncStorage.getItem('userId'),
       studyid: info.item.NCTId[0],
     });
     await fetch(`${BACKEND_URL}/trial/delete`, {
@@ -29,6 +30,7 @@ const StudyIndex = ({info, handleAdd, handlePress, checkStudy}) => {
         'Content-type': 'application/json; charset=UTF-8',
       },
     });
+    setDeleted(!deleted);
   };
 
   return (
