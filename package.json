@@ -36,7 +36,7 @@
     "react-native-navigation": "^6.9.0",
     "react-native-photo-view": "github:shoutem/react-native-photo-view#0ffa1481f6b6cb8663cb291b7db1d6644440584d",
     "react-native-range-slider": "^0.1.2",
-    "react-native-reanimated": "^1.9.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-safe-area-context": "^3.0.7",
     "react-native-screens": "^2.9.0",
     "react-native-splash-screen": "^3.2.0",
